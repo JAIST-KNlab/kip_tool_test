@@ -1,0 +1,108 @@
+body {
+  display: block;
+  height: 98vh;
+  width: 100vw;
+  max-width: 50em;
+  padding: 0em 0em 0em 0em;
+  margin: 0em 0em 0em 0em;
+  margin-right: auto;
+  margin-left: auto;
+  font-family: sans-serif;
+}
+
+[id^="chart"] {
+  display: block;
+  background-color: #fdfdfd;
+}
+#chart1{
+  height: 469px;
+  width: 100%;
+  margin-top:1em;
+  min-width: 782px;
+}
+#chart2{
+  /*height: calc(95vh - 469px - 1em);*/
+  width: 100%;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: red;
+  stroke-width: 0.25em;
+}
+
+text {
+  font-size: 10px;
+}
+
+#container {
+  display: grid;
+  grid-template-areas:
+    "A B B C C"
+    "D D E E F"
+    "G G H H I";
+  background: url('../images/map.bmp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 95%;
+  height: 100%;
+  background-position: 10% 20%;
+  grid-template-rows: minmax(132px, 28%) minmax(175px, 37%) minmax(140px, 30%);
+  grid-template-columns: minmax(206px, 27%) minmax(70px, 9.5%) minmax(73px, 9.3%) minmax(140px, 18.5%);
+}
+
+[id^="item"]{
+  padding:1em;
+  text-align: center;
+   line-height: 4em;
+   font-size: 1.5em;
+   font-weight: bold;
+   color:#ffffff
+}
+
+#itemA {
+  grid-area: A;
+}
+
+#itemB {
+  grid-area: B;
+}
+
+#itemC {
+  grid-area: C;
+}
+
+#itemD {
+  grid-area: D;
+}
+
+#itemE {
+  grid-area: E;
+}
+
+#itemF {
+  grid-area: F;
+}
+
+#itemG {
+  grid-area: G;
+}
+
+#itemH {
+  grid-area: H;
+}
+
+#itemI {
+  grid-area: I;
+}
