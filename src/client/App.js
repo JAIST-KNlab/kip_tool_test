@@ -2,11 +2,16 @@ import React from 'react';
 import './App.css';
 import { Rnd } from 'react-rnd';
 
-let common = { socket: null, metric_rel: [], metric_name: ["温度", "湿度", "照度", "UV", "不快指数", "気圧", "騒音", "暑さ指数", "総人数", "休憩人数", "会議室人数", "休憩女性数", "休憩笑顔数", "休憩感情(hapiness)", "休憩感情(surprise)", "休憩感情(neutral)", "休憩感情(sadness)", "休憩感情(anger)", "休憩感情(contempt)", "休憩感情(disgust)", "休憩感情(fear)"], metric_prop: { width: 150, height: 50 } };
-//for debug
-//let common = {socket: null, metric_rel: [], metric_name: ["温度", "湿度", "照度", "UV", "不快指数", "気圧", "騒音", "暑さ指数", "総人数"], metric_prop: { width: 150, height: 50 } };
+let common = { socket: null, metric_rel: [], metric_name: [
+  "温度", "湿度", "照度", "UV", "不快指数", "気圧", "騒音",
+    "暑さ指数",
+    "総人数",
+    "平均人数",
+    "休憩人数",
+     "休憩女性数", "休憩笑顔数" ,"休憩感情(hapiness)","休憩感情(surprise)", "休憩感情(neutral)", "休憩感情(sadness)", "休憩感情(anger)","休憩感情(contempt)","休憩感情(disgust)","休憩感情(fear)"],
+ metric_prop: { width: 150, height: 50 } };
 
-//common.socket = io.connect();
+common.socket = io.connect();
 for (let cmi = 0; cmi < common.metric_name.length; cmi++)
   common.metric_rel.push({ name: "", id: [cmi], weight: [1], x: Math.random() * 1000, y: Math.random() * 700, focus: false })
 
@@ -56,7 +61,7 @@ class Metric extends React.Component {
     //to carry common.metric_rel data
     } else {
       let minfo = common.metric_rel[this.props.key_num];
-      
+
       this.basic_style.display = "flex";
       this.basic_style.border = 'none';
 
@@ -69,7 +74,6 @@ class Metric extends React.Component {
       if (minfo.focus) {
         this.basic_style.border = 'solid 3px #ff0000';
         console.log(this)
-        //sendSocketIO(this);
       }
 
       this.setState({
@@ -98,7 +102,7 @@ class Metric extends React.Component {
         let distance_x = _d.x - common.metric_rel[mri].x;
         let distance_y = _d.y - common.metric_rel[mri].y;
 
-        //judge with x y distance. 
+        //judge with x y distance.
         if (((distance_x > -1 * this.state.size.width) && (distance_x < opponent_width)) && ((distance_y > -1 * this.state.size.height) && (distance_y < (opponent_height)))) {
 
           //update closest mri
@@ -170,7 +174,7 @@ class Metric extends React.Component {
       for (let mri = 0; mri < common.metric_rel.length; mri++) {
         if (common.metric_rel[mri].id.indexOf(_d.target_id) != -1) {
           common.metric_rel[mri].weight.splice(common.metric_rel[mri].id.indexOf(_d.target_id), 1); //delete weight
-          common.metric_rel[mri].id.splice(common.metric_rel[mri].id.indexOf(_d.target_id), 1); //delete id 
+          common.metric_rel[mri].id.splice(common.metric_rel[mri].id.indexOf(_d.target_id), 1); //delete id
           //reset name if remained metric_rel have single id
           if (common.metric_rel[mri].id.length == 1) {
             common.metric_rel[mri].name = "";
@@ -221,17 +225,17 @@ class Metric extends React.Component {
 
   render() {
     let inner_component = [
-    <MetricName 
-      key={this.props.key_num + "mn"} 
-      info={this.state} 
-      update_name={(_name) => this.update_name(_name)} 
-      />, 
-    <InnerMeteric 
-      key={this.props.key_num + "im"} 
-      key_num={this.props.key_num} 
-      info={this.state} 
-      onClick={(_id) => this.separate(_id)} 
-      weight_change={(_weight) => this.weight_change(_weight)} 
+    <MetricName
+      key={this.props.key_num + "mn"}
+      info={this.state}
+      update_name={(_name) => this.update_name(_name)}
+      />,
+    <InnerMeteric
+      key={this.props.key_num + "im"}
+      key_num={this.props.key_num}
+      info={this.state}
+      onClick={(_id) => this.separate(_id)}
+      weight_change={(_weight) => this.weight_change(_weight)}
       />
   ]
 
@@ -282,7 +286,7 @@ class MetricName extends React.Component {
     this.setState({ value: nextProps.info.name });
   }
 
-  //input type value to input (in react way) 
+  //input type value to input (in react way)
   //save input value to common.metric_rel
   changeText(e) {
     this.props.update_name(e.target.value);
@@ -412,6 +416,9 @@ class App extends React.Component {
       metric.push(
         <Metric key={mri} key_num={mri} updateApp={() => { this.updateApp() }} />
       )
+      if(common.metric_rel[mri].focus){
+        sendSocketIO(common.metric_rel[mri]);
+      }
     }
 
     return (
@@ -427,7 +434,7 @@ const sendSocketIO = (obj) => {
     name: obj.state.name,
     metric: obj.state.id,
     weight: obj.state.weight
-  }); //weight??
+  });
 }
 
 export default App;
