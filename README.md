@@ -10,7 +10,7 @@ sudo systemctl stop firewalld.service
 
 + node_modules の中身を全部消してみる
 
-+ npm audit fix　する
++ npm audit fix　や　npm ci　をする
 
 + 不足分を自動ですべて補充する
 
